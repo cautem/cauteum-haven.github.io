@@ -22,11 +22,14 @@ SPDX-License-Identifier: Apache-2.0
 - Docker default seccomp kept; `no-new-privileges`; `CapDrop=NET_RAW`
 - Landlock via `cautem-init` when kernel ABI ≥ 1 (often ABI 0 on Desktop)
 
-The egress proxy resolves a destination once and connects to the filtered IP.
-Reserved, loopback and link-local addresses stay blocked even when a policy
-specifies `allowed_ips`. If an upstream corporate HTTP proxy is configured,
-that proxy resolves the destination itself. Treat it as part of the trusted
-network boundary; routes with `allowed_ips` are refused in this mode.
+The egress proxy resolves a destination once, applies SSRF and `allowed_ips`
+checks, and connects to a filtered IP. When an upstream corporate HTTP proxy is
+configured, the proxy receives that IP as the CONNECT target, so it does not
+resolve the hostname a second time. Reserved, loopback and link-local addresses
+stay blocked even when a policy specifies `allowed_ips`. The upstream proxy
+remains part of the trusted network boundary. Setting
+`CAUTEM_PROXY_CONNECT_BY_HOSTNAME=true` is rejected when an upstream proxy is
+used because it would bypass the filtered IP.
 
 On Docker Desktop for macOS, the proxy may not receive a reliable peer binary
 identity. A binary-specific policy needs a platform that can supply that

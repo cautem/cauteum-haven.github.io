@@ -40,6 +40,7 @@ jobs:
                    assets/images/mascot-scenes/remote.png assets/images/mascot-scenes/fast.png \
                    assets/images/mascot-scenes/flexible.png assets/images/mascot-scenes/happy.png \
                    assets/images/cautem-mascot.png \
+                   assets/images/cautem-mascot-no-tablet.png \
                    assets/images/cautem-gopher-peek.svg \
                    assets/images/mascot-cutouts/clean.png assets/images/mascot-cutouts/nav.png \
                    assets/images/mascot-cutouts/containers.png \
@@ -66,6 +67,8 @@ jobs:
             grep -q 'ws-hero__mascot-art' "$page"
             grep -q 'ws-hero__pupil--left' "$page"
             grep -q 'ws-hero__pupil--right' "$page"
+            grep -q 'cautem-mascot-no-tablet.png' "$page"
+            ! grep -q 'cautem-mascot.png' "$page"
             ! grep -q 'ws-hero__mascot-canvas' "$page"
             grep -q 'assets/javascripts/hero.js' "$page"
             ! grep -q 'hero-3d.js' "$page"
@@ -78,8 +81,6 @@ jobs:
           grep -q 'property="og:locale" content="ru_RU"' site/ru/index.html
           grep -q 'cautem-app-icon.png' site/index.html
           grep -q 'cautem-app-icon.png' site/ru/index.html
-          grep -q 'cautem-mascot.png' site/index.html
-          grep -q 'cautem-mascot.png' site/ru/index.html
           grep -q 'extra-20261009.css' site/ru/index.html
           grep -q 'mascot.css' site/ru/index.html
           grep -q 'hero.js' site/ru/index.html
@@ -91,7 +92,10 @@ jobs:
             grep -q 'property="og:title"' "$page"
             grep -q 'property="og:description"' "$page"
             grep -q 'property="og:url"' "$page"
-            grep -q 'property="og:image" content="https://cautem.github.io/sandbox.dev/assets/images/cautem-mascot.png"' "$page"
+            grep -q 'property="og:image" content="https://cautem.github.io/sandbox.dev/assets/images/cautem-app-icon.png"' "$page"
+            grep -q 'property="og:image:width" content="1317"' "$page"
+            grep -q 'property="og:image:height" content="1194"' "$page"
+            grep -q 'name="twitter:image" content="https://cautem.github.io/sandbox.dev/assets/images/cautem-app-icon.png"' "$page"
             grep -q 'name="twitter:card" content="summary_large_image"' "$page"
           done
           grep -q 'Start the gateway' site/get-started/index.html

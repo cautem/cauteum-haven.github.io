@@ -96,10 +96,10 @@
 
 .ws-hero__pupil::after {
   position: absolute;
-  top: 10%;
-  left: 10%;
-  width: 80%;
-  height: 80%;
+  top: 6%;
+  left: 6%;
+  width: 88%;
+  height: 88%;
   border-radius: 50%;
   background: radial-gradient(circle at 38% 35%, #4a4a4e 0, #111116 29%, #030307 76%);
   box-shadow: 0 0.06rem 0.14rem rgb(0 0 0 / 35%);
@@ -108,8 +108,8 @@
   transition: transform 100ms ease-out;
 }
 
-.ws-hero__pupil--left { top: 39.9%; left: 44.45%; }
-.ws-hero__pupil--right { top: 37.3%; left: 64.6%; }
+.ws-hero__pupil--left { top: 41.2%; left: 44.9%; }
+.ws-hero__pupil--right { top: 39%; left: 64.9%; }
 
 .ws-mac-terminal {
   position: relative;
