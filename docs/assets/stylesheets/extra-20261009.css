@@ -67,9 +67,15 @@
   left: 50%;
   width: 88%;
   aspect-ratio: 720 / 658;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translate(
+    calc(var(--look-x, 0) * 0.22rem),
+    calc(var(--look-y, 0) * 0.14rem + var(--peek-y, 0px))
+  );
+  transition: transform 460ms cubic-bezier(0.2, 0.7, 0.2, 1);
   filter: drop-shadow(0 0.45rem 0.8rem rgb(0 0 0 / 22%));
 }
+
+.ws-hero__mascot-track.is-peeking .ws-hero__mascot-art { --peek-y: -3.2rem; }
 
 .ws-hero__mascot-art > img {
   position: absolute;
@@ -332,6 +338,7 @@
   .ws-hero__image { --terminal-offset: clamp(4.7rem, calc(36vw - 2rem), 8.4rem); }
   .ws-hero__mascot-track { top: -2.15rem; }
   .ws-hero__mascot-art { width: 91%; }
+  .ws-hero__mascot-track.is-peeking .ws-hero__mascot-art { --peek-y: -2rem; }
   .ws-flow__screen { min-height: 11.4rem; padding-right: 0.65rem; padding-left: 0.65rem; }
   .ws-flow__note { text-align: left; }
 }
@@ -339,6 +346,7 @@
 @media (prefers-reduced-motion: reduce) {
   .ws-mac-terminal__cursor { animation: none; }
   .ws-hero__pupil::after { transition: none; }
+  .ws-hero__mascot-art { transition: none; }
   .ws-flow--playing .ws-flow__panel:not([hidden]) .ws-flow__line { opacity: 1; transform: none; }
 }
 

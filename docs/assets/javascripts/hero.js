@@ -12,6 +12,39 @@
   var timers = [];
   var manual = false;
   var visible = false;
+  var hero = flow.closest(".ws-hero");
+  var mascot = hero && hero.querySelector("[data-mascot-stage]");
+  var mascotPeekTimer = null;
+  var mascotHideTimer = null;
+  var mascotVisible = false;
+
+  function stopMascotPeek() {
+    window.clearTimeout(mascotPeekTimer);
+    window.clearTimeout(mascotHideTimer);
+    mascotPeekTimer = null;
+    mascotHideTimer = null;
+    if (mascot) mascot.classList.remove("is-peeking");
+  }
+
+  function scheduleMascotPeek() {
+    if (!mascot || !mascotVisible || reduceMotion.matches || document.hidden) return;
+    if (mascotPeekTimer || mascotHideTimer) return;
+    mascotPeekTimer = window.setTimeout(function () {
+      mascot.classList.add("is-peeking");
+      mascotHideTimer = window.setTimeout(function () {
+        mascot.classList.remove("is-peeking");
+        mascotPeekTimer = null;
+        mascotHideTimer = null;
+        scheduleMascotPeek();
+      }, 1450);
+    }, 4200 + Math.random() * 4200);
+  }
+
+  function setMascotVisible(isVisible) {
+    mascotVisible = isVisible;
+    if (isVisible) scheduleMascotPeek();
+    else stopMascotPeek();
+  }
 
   function clearTimers() {
     timers.forEach(window.clearTimeout);
@@ -88,6 +121,7 @@
   if ("IntersectionObserver" in window) {
     new IntersectionObserver(function (entries) {
       visible = entries[0].isIntersecting;
+      setMascotVisible(visible);
       if (visible && !manual && !reduceMotion.matches) activate(0, true, "initial");
       if (!visible) {
         clearTimers();
@@ -96,11 +130,10 @@
     }, { threshold: 0.25 }).observe(flow);
   } else if (!reduceMotion.matches) {
     visible = true;
+    setMascotVisible(true);
     activate(0, true, "initial");
   }
 
-  var hero = flow.closest(".ws-hero__image");
-  var mascot = hero && hero.querySelector("[data-mascot-stage]");
   if (hero && mascot) {
     hero.addEventListener("pointermove", function (event) {
       var bounds = hero.getBoundingClientRect();
@@ -112,6 +145,18 @@
     hero.addEventListener("pointerleave", function () {
       mascot.style.setProperty("--look-x", "0");
       mascot.style.setProperty("--look-y", "0");
+    });
+  }
+
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) stopMascotPeek();
+    else if (mascotVisible) scheduleMascotPeek();
+  });
+
+  if (typeof reduceMotion.addEventListener === "function") {
+    reduceMotion.addEventListener("change", function () {
+      if (reduceMotion.matches) stopMascotPeek();
+      else if (mascotVisible) scheduleMascotPeek();
     });
   }
 })();
