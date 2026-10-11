@@ -108,6 +108,7 @@ jobs:
           grep -q 'mascot-cutouts/podman.png' site/providers/podman/index.html
           grep -q 'mascot-cutouts/worker.png' site/providers/kubernetes/index.html
           grep -q 'mascot-cutouts/docker.png' site/get-started/first-sandbox/index.html
+          ! grep -R -q 'src="/assets/images/mascot-cutouts/' site
           grep -q 'CAUTEM_VERSION' site/get-started/index.html
           grep -q 'v0.1.6' site/get-started/index.html
           ! grep -q 'v0.1.0-beta.1' site/get-started/index.html

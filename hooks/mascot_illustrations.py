@@ -4,6 +4,7 @@
 """Choose a transparent mascot illustration that matches each topic."""
 
 from pathlib import PurePosixPath
+from mkdocs.utils import normalize_url
 
 
 def _illustration(source: str) -> str:
@@ -49,9 +50,10 @@ def on_page_content(html, page, config, files):
     variant = _illustration(source)
     # Every cutout now uses the same transparent gopher artwork.
     width, height = (720, 658)
+    image_url = normalize_url(f"assets/images/mascot-cutouts/{variant}.png", page=page)
     illustration = (
         f'<figure class="ws-doc-mascot ws-doc-mascot--{variant}" aria-hidden="true">'
-        f'<img class="ws-doc-mascot__art" src="/assets/images/mascot-cutouts/{variant}.png" '
+        f'<img class="ws-doc-mascot__art" src="{image_url}" '
         f'alt="" width="{width}" height="{height}" loading="lazy" draggable="false">'
         "</figure>"
     )
