@@ -20,7 +20,9 @@ SPDX-License-Identifier: Apache-2.0
 - Default-deny network; allowlist from policy + composed providers
 - Secrets as `cautem:resolve:env:…` rewritten on egress only
 - Docker default seccomp kept; `no-new-privileges`; `CapDrop=NET_RAW`
-- Landlock via `cautem-init` when kernel ABI ≥ 1 (often ABI 0 on Desktop)
+- Landlock path rules via `cautem-init` when kernel ABI ≥ 1 (profile follows the available ABI up to V5, or V7 on ABI ≥ 7; often ABI 0 on Desktop)
+- Denied-access kernel audit when Landlock ABI ≥ 7; events go to the Linux kernel audit subsystem and are not automatically copied into `cautem logs`
+- With the OpenShell gRPC supervisor relay on Linux, the supervisor sends OCSF process launch/exit observations for the main workload and `/proc`-observed descendants to gateway logs. `SIGCHLD` and `wait4` detect exits of the main process and supervisor-adopted children promptly; the 250 ms `/proc` scan remains a fallback. The relay batches events for up to 25 ms. Network time and retries still prevent a guaranteed 250 ms gateway-delivery bound. Short-lived children reaped by their own parent and `exec` replacements can still be missed. Only executable basenames are recorded, without argv or environment values. This is not a complete process or filesystem audit stream.
 
 The egress proxy resolves a destination once, applies SSRF and `allowed_ips`
 checks, and connects to a filtered IP. When an upstream corporate HTTP proxy is

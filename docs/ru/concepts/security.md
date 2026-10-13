@@ -20,7 +20,9 @@ SPDX-License-Identifier: Apache-2.0
 - Default-deny сеть; allowlist из policy + composition провайдеров
 - Секреты как `cautem:resolve:env:…` с rewrite только на egress
 - Default seccomp Docker; `no-new-privileges`; `CapDrop=NET_RAW`
-- Landlock через `cautem-init` при ABI ≥ 1 (на Desktop часто ABI 0)
+- Правила путей Landlock через `cautem-init` при ABI ≥ 1 (профиль соответствует доступному ABI до V5 или V7 при ABI ≥ 7; на Desktop часто ABI 0)
+- Kernel audit для отказов Landlock при ABI ≥ 7; события попадают в audit-подсистему Linux и автоматически не копируются в `cautem logs`
+- При использовании OpenShell gRPC relay на Linux supervisor отправляет в gateway OCSF-наблюдения о запуске и выходе основного процесса и обнаруженных через `/proc` потомков. `SIGCHLD` и `wait4` ускоряют локальное обнаружение выхода основного и усыновлённых supervisor процессов; опрос `/proc` каждые 250 мс остаётся резервным способом обнаружения. Relay отправляет события пачками с ожиданием до 25 мс. Сетевое время и повторные попытки всё ещё не позволяют гарантировать доставку в gateway за 250 мс. Короткие процессы, которые успевает собрать их родитель, и замены через `exec` могут быть пропущены. Записывается только basename executable, без argv и переменных окружения. Это не полный аудит процессов или файловой системы.
 
 Egress proxy один раз разрешает имя назначения, проверяет SSRF и `allowed_ips`,
 затем подключается к отфильтрованному IP. При настроенном корпоративном HTTP

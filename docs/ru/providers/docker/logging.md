@@ -34,8 +34,13 @@ export CAUTEM_DOCKER_LOG_MAX_FILE=3
 
 ## Observation ring
 
-Gateway держит in-memory кольцо на sandbox (4096 строк). При delete кольцо
-удаляется. Поток:
+Gateway держит in-memory кольцо на sandbox (4096 строк, 1 MiB). При удалении
+sandbox, которым управляет CLI, он сохраняет последние строки в каталоге
+данных gateway:
+до 1 MiB для каждого из последних 64 удалённых sandbox, не дольше 7 дней.
+Архив остаётся доступен только своему workspace и читается без `--tail`;
+подписаться на него нельзя. Новый sandbox с тем же именем очищает старый
+архив. Для live-потока используйте:
 
 ```bash
 cautem logs demo --tail --source proxy
