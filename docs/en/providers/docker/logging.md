@@ -34,8 +34,12 @@ Daemon-wide fallback (all containers on the host):
 
 ## Observation ring
 
-Gateway keeps a per-sandbox in-memory ring (4096 lines). Deleted sandboxes drop
-their ring. Stream with:
+Gateway keeps a per-sandbox in-memory ring (4096 lines, 1 MiB). On CLI-managed
+sandbox deletion it archives the recent tail in the gateway data directory:
+up to 1 MiB for each of the latest 64 deleted sandboxes, retained for up to 7
+days. Archived logs remain workspace-scoped and can be read without `--tail`;
+they cannot be followed live. A new sandbox that reuses the name clears the
+older archive. Stream live logs with:
 
 ```bash
 cautem logs demo --tail --source proxy

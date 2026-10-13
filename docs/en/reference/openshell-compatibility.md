@@ -12,7 +12,7 @@ The current work is concentrated in five areas:
 | --- | --- |
 | Configuration | Defaults, precedence, empty values, validation, and observable effects of each gateway, policy, profile, and template field. |
 | CLI and SDK | Commands, flags, environment variables, output, errors, and streaming behavior against pinned OpenShell fixtures. |
-| Supervisor | Complete event, signal, child-process, exit, and finalization behavior across restart and reconnect. |
+| Supervisor | Full event, signal, child-process, exit, and finalization parity across restart and reconnect. With the OpenShell gRPC relay, Linux reports the main workload and `/proc`-observed descendants; `SIGCHLD`/`wait4` promptly detect exits of the main process and supervisor-adopted children, while the 250 ms scan remains a fallback. Relay batching waits up to 25 ms; network time and retries prevent a guaranteed 250 ms delivery bound. Children reaped by their own parent and `exec` replacements can still be missed, and full restart/reconnect parity remains open. |
 | gRPC extensions | Per-method behavior, external compute-driver data paths, and middleware/interceptor error, deadline, and cancellation behavior. |
 | Published SDK modules | Standalone SDK consumer builds against released module versions, without local workspace replacements. |
 
