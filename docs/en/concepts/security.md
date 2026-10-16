@@ -37,6 +37,15 @@ On Docker Desktop for macOS, the proxy may not receive a reliable peer binary
 identity. A binary-specific policy needs a platform that can supply that
 identity; container boundaries and mount restrictions still apply.
 
+Caller supplied backend configuration is disabled by default. When an operator
+enables it, named volumes are admitted only when engine labels bind them to the
+verified workspace; Quarshell records and rechecks their identity before
+restart. Host bind and image mounts remain unavailable while resource admission
+is enabled because their sources do not have a trusted label resolver. See the
+[Docker](../providers/docker/prerequisites.md#caller-supplied-driver-configuration)
+and [Podman](../providers/podman/prerequisites.md#caller-supplied-driver-configuration)
+configuration examples.
+
 ## Boundaries still being verified
 
 The October 2026 security review fixed known paths through the Docker bridge gateway, live CONNECT tunnels after policy updates, missing SSH hardening wrappers, Docker inspect errors, reserved mount targets, and gateway-owned credentials reappearing from host environment. Those fixes have focused tests. The following runtime checks remain open:

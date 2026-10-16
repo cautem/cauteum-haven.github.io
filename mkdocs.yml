@@ -83,6 +83,8 @@ plugins:
             Overview: Обзор
             Concepts: Концепции
             Architecture: Архитектура
+            Architecture decisions: Архитектурные решения
+            ADR 0001: ADR 0001
             Security: Безопасность
             Providers: Провайдеры
             Planned: В планах
@@ -103,6 +105,8 @@ plugins:
             Environment: Окружение
             Development: Разработка
             OpenShell compatibility: Совместимость с OpenShell
+            Runtime acceptance: Runtime acceptance
+            Rename and release plan: Переименование и релиз
 
 extra_css:
   - assets/stylesheets/extra-20261009.css
@@ -162,6 +166,8 @@ nav:
       - Your first sandbox: get-started/first-sandbox.md
   - Concepts:
       - Architecture: concepts/architecture.md
+      - Architecture decisions:
+          - ADR 0001: concepts/decisions/0001-domain-and-backend-spi.md
       - Security: concepts/security.md
   - Providers:
       - Docker:
@@ -193,3 +199,5 @@ nav:
       - Environment: reference/environment.md
       - Development: reference/development.md
       - OpenShell compatibility: reference/openshell-compatibility.md
+      - Runtime acceptance: reference/runtime-acceptance.md
+      - Rename and release plan: reference/renaming-and-release.md

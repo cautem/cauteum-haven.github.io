@@ -48,6 +48,46 @@ cautem gateway select local
 
 Compose gateway: `cautem-gateway/compose/docker-compose.yml`.
 
+## Профиль AppArmor
+
+Docker backend принимает `app_armor_profile` в таблице driver gateway:
+
+```toml
+[openshell.drivers.docker]
+app_armor_profile = "RuntimeDefault"
+```
+
+Допустимые значения: `RuntimeDefault`, `Unconfined` и
+`Localhost/<profile-name>`. Для `RuntimeDefault` и `Localhost/...` Engine host
+должен сообщать о поддержке AppArmor; иначе sandbox create завершится до
+создания ресурсов. `Unconfined` явно отключает AppArmor confinement.
+
+## Driver-конфигурация от пользователя
+
+`template.driver_config` по умолчанию выключен. Включайте его для Docker только
+если workload нужны специфичные для Docker mounts или CDI-устройства:
+
+```toml
+[openshell.drivers.docker]
+allow_driver_config = true
+```
+
+Named volume должен существовать и иметь labels, разрешающие подключение к
+workspace sandbox:
+
+```bash
+docker volume create \
+  --label openshell.ai/sandbox-attachable=true \
+  --label openshell.ai/sandbox-attachable-workspace=team-a \
+  agent-cache
+```
+
+Политика `resource_admission` по умолчанию требует обе labels и совпадение
+workspace identity. Quarshell записывает identity допущенного volume и проверяет
+её перед повторным запуском. Bind и image mounts нельзя проверять через labels
+engine, поэтому они запрещены, пока admission включён; bind mounts также требуют
+`enable_bind_mounts = true`.
+
 ## Память Desktop
 
 Агенты без `--memory` и безлимитные container logs раздувают VM Desktop.

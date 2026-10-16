@@ -70,3 +70,19 @@ cautem sandbox create --template desk --name worker --workspace "$PWD"
 
 Флаги перекрывают поля template. Soft defaults из config/env заполняют только
 пустые поля — см. [Ресурсы](./resources.md).
+
+По умолчанию шаблоны хранятся локально в профиле CLI. Флаг `--gateway`
+управляет шаблоном в workspace выбранного Gateway:
+
+```bash
+cautem sandbox template create shared-agent --gateway \
+  --image ghcr.io/example/agent:stable --cpu 500m --memory 2Gi \
+  --gpu 1 --env MODE=fast --label team=runtime
+cautem sandbox template list --gateway
+cautem sandbox template get shared-agent --gateway
+cautem sandbox template delete shared-agent --gateway
+```
+
+Общий lifecycle шаблонов доступен Gateway API клиентам. Создание sandbox из
+Gateway-шаблона пока не подключено в CLI; `sandbox create --template` сейчас
+читает локальный шаблон.
