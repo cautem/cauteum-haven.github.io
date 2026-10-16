@@ -121,6 +121,11 @@ driver, storage, gateway JWT, OTLP, rate-limit, middleware, interceptor, and
 complete readiness/metrics consumers. Supplied unsupported settings fail before the daemon
 creates state or opens listeners. The loader also rejects unknown/duplicate
 keys, invalid required fields/enums, and a database URL embedded in TOML.
+The parser accepts the pinned v0.1.4 schema version 2 and its singular
+`compute_driver` selector; the existing `compute_drivers` list remains a local
+multi-backend compatibility form. Parsing an upstream fixture does not mean all
+of its driver settings are runnable: unsupported backend settings still fail
+closed during startup.
 Without an OpenShell file, the existing cautem defaults still apply.
 The optional `health_bind_address` and `metrics_bind_address` tables, plus
 `OPENSHELL_HEALTH_PORT` / `OPENSHELL_METRICS_PORT` and matching port flags,

@@ -123,6 +123,11 @@ certificates, external SNI certificates, mTLS identity и выбор builtin/use
 и полной readiness/metrics instrumentation. Указанные неподдержанные settings блокируют startup
 до создания state и открытия listeners. Loader также отклоняет unknown/duplicate
 keys, отсутствующие required fields, неверные enums и database URL внутри TOML.
+Parser принимает schema version 2 из закреплённого v0.1.4 и его singular
+selector `compute_driver`; существующий список `compute_drivers` оставлен для
+локального multi-backend формата. Парсинг upstream fixture не означает, что
+все настройки его drivers уже запускаются: неподдержанные backend settings
+по-прежнему fail closed на startup.
 Без файла OpenShell пока действуют прежние defaults cautem.
 Необязательные `health_bind_address` и `metrics_bind_address`, а также
 `OPENSHELL_HEALTH_PORT` / `OPENSHELL_METRICS_PORT` и соответствующие флаги

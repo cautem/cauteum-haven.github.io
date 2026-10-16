@@ -70,3 +70,19 @@ cautem sandbox create --template desk --name worker --workspace "$PWD"
 
 Flag values override template fields. Soft defaults from config/env fill gaps
 only when flags and template omit them — see [Resources](./resources.md).
+
+Templates are local to the CLI profile by default. Add `--gateway` to manage a
+workspace-scoped template through the selected Gateway:
+
+```bash
+cautem sandbox template create shared-agent --gateway \
+  --image ghcr.io/example/agent:stable --cpu 500m --memory 2Gi \
+  --gpu 1 --env MODE=fast --label team=runtime
+cautem sandbox template list --gateway
+cautem sandbox template get shared-agent --gateway
+cautem sandbox template delete shared-agent --gateway
+```
+
+The shared template lifecycle is available to Gateway API clients. CLI sandbox
+creation from a Gateway template is not wired yet; `sandbox create --template`
+currently reads a local template.

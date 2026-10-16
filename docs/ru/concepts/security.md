@@ -38,6 +38,14 @@ proxy, так как оно обходит проверенный IP.
 требует платформу с такой идентификацией; граница контейнера и ограничения
 монтирования продолжают действовать.
 
+Пользовательская backend-конфигурация по умолчанию выключена. Если оператор
+включил её, named volumes допускаются только при engine labels, привязывающих их
+к проверенному workspace; Quarshell записывает identity volume и проверяет её
+перед повторным запуском. Host bind и image mounts недоступны при включённом
+resource admission: для их источников нет доверенного label resolver. Примеры
+конфигурации есть для [Docker](../providers/docker/prerequisites.md)
+и [Podman](../providers/podman/prerequisites.md).
+
 ## Что ещё проверяем
 
 После проверки безопасности в октябре 2026 года исправлены известные пути через gateway внутренней Docker-сети, действующие CONNECT-потоки после смены политики, отсутствие SSH hardening wrapper, ошибки Docker inspect, системные mount targets и возврат удалённых gateway credentials из host environment. Для исправлений есть целевые тесты. Остаются проверки на работающем backend:
